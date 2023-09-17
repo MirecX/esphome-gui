@@ -7,23 +7,22 @@ namespace esphome {
 namespace gui {
 
 class GuiObject {
+ public:
+  virtual void setup();
+  virtual void update();
+  void set_coords(int x, int y);
+  void set_dimensions(int w, int h);
+  void set_text(const char* val) { this->text_ = val; }
+  inline const char* get_text() { return this->text_.c_str(); }
+
  protected:
   int x_ = 0;
   int y_ = 0;
   int w_ = 0;
   int h_ = 0;
-  lv_style_t style;
-  lv_obj_t* obj{nullptr};
+  lv_style_t style_;
+  lv_obj_t* obj_{nullptr};
   std::string text_{""};
-
-  void setup();
-
- public:
-  void update();
-  void set_coords(int x, int y);
-  void set_dimensions(int w, int h);
-  void set_text(const char* val) { this->text_ = val; }
-  inline const char* get_text() { return this->text_.c_str(); }
 };
 
 class GuiLabel : public GuiObject, public Component {

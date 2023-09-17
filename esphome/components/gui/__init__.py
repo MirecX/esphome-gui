@@ -84,18 +84,17 @@ GUI_ITEM_SCHEMA = cv.typed_schema(
     }
 )
 
-GUI_SCHEMA = cv.Schema(
-    {
-        cv.Required(CONF_ID): cv.declare_id(GuiComponent),
-        cv.GenerateID(CONF_DISPLAY_ID): cv.use_id(display.DisplayBuffer),
-        cv.Optional(CONF_ITEMS): cv.All(
-            cv.ensure_list(GUI_ITEM_SCHEMA),
-        ),
-    }
-)
 
 CONFIG_SCHEMA = cv.All(
-    GUI_SCHEMA,
+    cv.Schema(
+        {
+            cv.Required(CONF_ID): cv.declare_id(GuiComponent),
+            cv.GenerateID(CONF_DISPLAY_ID): cv.use_id(display.DisplayBuffer),
+            cv.Optional(CONF_ITEMS): cv.All(
+                cv.ensure_list(GUI_ITEM_SCHEMA),
+            ),
+        }
+    )
 )
 
 # LV_CONF_PATH contains path to modified lv_conf.h, from perspective
@@ -137,12 +136,12 @@ async def to_code(config):
 
     # Make sure that lv_conf.h gets copied to the src directory, along with
     # other generated files.
-    lv_conf_path = os.path.join(component_dir, 'lv_conf.h')
+    lv_conf_path = os.path.join(component_dir, "lv_conf.h")
     core.CORE.add_job(cfg.add_includes, [lv_conf_path])
- 
+
     cg.add_library("lvgl/lvgl", "^8.3")
     cg.add_platformio_option("build_flags", LVGL_BUILD_FLAGS)
-    cg.add_platformio_option("build_flags", ["-D LV_CONF_PATH='"+lv_conf_path+"'"])
+    cg.add_platformio_option("build_flags", ["-D LV_CONF_PATH='" + lv_conf_path + "'"])
     gui = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(gui, config)
 

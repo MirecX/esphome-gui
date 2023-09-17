@@ -5,14 +5,19 @@ namespace gui {
 
 static const char *const TAG = "gui.object";
 
+void GuiObject::setup() {
+  lv_style_init(&(this->style_));
+}
+
 inline void GuiObject::update() {
-  if (this->obj == nullptr) return;
+  if (this->obj_ == nullptr) return;
   ESP_LOGV(TAG, "\tsetting object's position and size");
   ESP_LOGV(TAG, "\t\tcoordinates: (%i, %i)", this->x_, this->y_);
   ESP_LOGV(TAG, "\t\tdimensions: (%i, %i)", this->w_, this->h_);
-  lv_obj_set_pos(this->obj, this->x_, this->y_);
-  lv_obj_set_size(this->obj, this->w_, this->h_);
+  lv_obj_set_pos(this->obj_, this->x_, this->y_);
+  lv_obj_set_size(this->obj_, this->w_, this->h_);
 }
+
 void GuiObject::set_coords(int x, int y) {
   this->x_ = x;
   this->y_ = y;
@@ -21,10 +26,9 @@ void GuiObject::set_dimensions(int w, int h) {
   this->w_ = w;
   this->h_ = h;
 }
-void GuiObject::setup() { lv_style_init(&(this->style)); }
 
 void GuiLabel::update() {
-  if (this->obj == nullptr) return;
+  if (this->obj_ == nullptr) return;
   GuiObject::update();
   lv_label_set_text(this->obj, this->text_.c_str());
   ESP_LOGV(TAG, "\tCalling lv_label_set_text");
@@ -41,7 +45,7 @@ void GuiLabel::setup() {
     ESP_LOGW(TAG, "Failed to get screen pointer");
     return;
   }
-  this->obj = lv_label_create(screen);
+  this->obj_ = lv_label_create(screen);
   this->update();
 }
 void GuiLabel::loop() {}
