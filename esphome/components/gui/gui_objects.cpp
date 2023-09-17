@@ -30,7 +30,7 @@ void GuiObject::set_dimensions(int w, int h) {
 void GuiLabel::update() {
   if (this->obj_ == nullptr) return;
   GuiObject::update();
-  lv_label_set_text(this->obj, this->text_.c_str());
+  lv_label_set_text(this->obj_, this->text_.c_str());
   ESP_LOGV(TAG, "\tCalling lv_label_set_text");
 }
 void GuiLabel::setup() {
@@ -94,16 +94,16 @@ void GuiCheckbox::setup() {
     ESP_LOGW(TAG, "Failed to get screen pointer");
     return;
   }
-  this->obj = lv_checkbox_create(lv_scr_act());
+  this->obj_ = lv_checkbox_create(lv_scr_act());
 
   if (this->get_text() != "") {
-    lv_checkbox_set_text(this->obj, this->get_text());
+    lv_checkbox_set_text(this->obj_, this->get_text());
   }
   // TODO: properly map esphome's font objects to lvgl
   lv_obj_set_style_text_font(this->obj, &lv_font_montserrat_18,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
 
-  lv_obj_add_event(this->obj, this->event_callback, LV_EVENT_VALUE_CHANGED,
+  lv_obj_add_event(this->obj_, this->event_callback, LV_EVENT_VALUE_CHANGED,
                    (void *)this);
   this->update();
 }
@@ -113,10 +113,10 @@ void GuiCheckbox::loop() {
   bool state = this->switch_->state;
   auto name = this->switch_->get_name();
 
-  lv_checkbox_set_text(this->obj, name.c_str());
+  lv_checkbox_set_text(this->obj_, name.c_str());
 
-  ((state) ? lv_obj_add_state(obj, LV_STATE_CHECKED)
-           : lv_obj_clear_state(obj, LV_STATE_CHECKED));
+  ((state) ? lv_obj_add_state(obj_, LV_STATE_CHECKED)
+           : lv_obj_clear_state(obj_, LV_STATE_CHECKED));
 }
 
 void GuiCheckbox::event_callback(lv_event_t *event) {

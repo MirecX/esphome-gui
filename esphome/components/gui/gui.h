@@ -21,9 +21,6 @@ public:
   void loop() override;
   void dump_config() override;
   float get_setup_priority() const override {
-    if (this->display_ != nullptr) {
-      return this->display_->get_setup_priority() + 0.5;
-    }
     return setup_priority::PROCESSOR;
   }
 

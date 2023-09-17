@@ -48,7 +48,7 @@ void GuiComponent::setup() {
 
   lv_init();
 #if LV_USE_LOG
-  lv_log_register_print_cb(lv_esp_log);
+  //lv_log_register_print_cb(lv_esp_log);
 #endif
 
   lv_disp_draw_buf_init(&this->lvgl_buffer_, buf, NULL, len);
@@ -68,7 +68,7 @@ void GuiComponent::setup() {
 void GuiComponent::loop() { lv_timer_handler(); }
 
 void GuiComponent::dump_config() {
-  auto drv = this->lv_disp_;
+  auto drv = this->lvgl_driver_;
   ESP_LOGCONFIG(TAG, "LVGL driver.hor_res: %i", drv->hor_res);
   ESP_LOGCONFIG(TAG, "LVGL driver.ver_res: %i", drv->ver_res);
   ESP_LOGCONFIG(TAG, "LVGL driver.rotation: %i", drv->rotation);
@@ -79,16 +79,16 @@ lv_disp_rot_t GuiComponent::get_lv_rotation() {
     auto rot = this->display_->get_rotation();
     switch (rot) {
     case DISPLAY_ROTATION_0_DEGREES:
-      return LV_DISP_ROTATION_0;
+      return LV_DISP_ROT_NONE;
     case DISPLAY_ROTATION_90_DEGREES:
-      return LV_DISP_ROTATION_90;
+      return LV_DISP_ROT_90;
     case DISPLAY_ROTATION_180_DEGREES:
-      return LV_DISP_ROTATION_180;
+      return LV_DISP_ROT_180;
     case DISPLAY_ROTATION_270_DEGREES:
-      return LV_DISP_ROTATION_270;
+      return LV_DISP_ROT_270;
     }
   }
-  return LV_DISP_ROTATION_0;
+  return LV_DISP_ROT_NONE;
 }
 
 } // namespace gui
