@@ -50,7 +50,7 @@ void GuiLabel::setup() {
 }
 void GuiLabel::loop() {}
 void GuiLabel::dump_config() {
-  if (this->obj == nullptr) return;
+  if (this->obj_ == nullptr) return;
 
   ESP_LOGCONFIG(TAG, "Label created at (%i, %i)", this->x_, this->y_);
 }
