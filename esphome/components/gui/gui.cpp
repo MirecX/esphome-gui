@@ -68,7 +68,7 @@ void GuiComponent::setup() {
 void GuiComponent::loop() { lv_timer_handler(); }
 
 void GuiComponent::dump_config() {
-  auto drv = this->lvgl_driver_;
+  lv_disp_drv_t drv = this->lvgl_driver_;
   ESP_LOGCONFIG(TAG, "LVGL driver.hor_res: %i", drv->hor_res);
   ESP_LOGCONFIG(TAG, "LVGL driver.ver_res: %i", drv->ver_res);
   ESP_LOGCONFIG(TAG, "LVGL driver.rotation: %i", drv->rotation);
